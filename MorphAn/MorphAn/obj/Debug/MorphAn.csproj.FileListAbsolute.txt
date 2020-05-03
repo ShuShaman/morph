@@ -1,0 +1,10 @@
+C:\Users\user\source\repos\MorphAn\MorphAn\bin\Debug\MorphAn.exe.config
+C:\Users\user\source\repos\MorphAn\MorphAn\bin\Debug\MorphAn.exe
+C:\Users\user\source\repos\MorphAn\MorphAn\bin\Debug\MorphAn.pdb
+C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.csprojAssemblyReference.cache
+C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.Properties.Resources.resources
+C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.csproj.GenerateResource.cache
+C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.csproj.CoreCompileInputs.cache
+C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.exe
+C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.pdb
+C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.MainForm.resources
