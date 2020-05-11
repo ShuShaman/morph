@@ -8,3 +8,4 @@ C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.csproj.CoreCompileI
 C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.exe
 C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.pdb
 C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.MainForm.resources
+C:\Users\user\source\repos\MorphAn\MorphAn\obj\Debug\MorphAn.HelpForm.resources

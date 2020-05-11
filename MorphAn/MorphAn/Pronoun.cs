@@ -8,18 +8,42 @@ namespace MorphAn
 {
     //Местоимение
     class Pronoun : Word
-    {//не указаны разряд и лицо
+    {
         string textWord;
-        Cases pronounCase;
-        Genders pronounGender;
+        string pronounCase;
+        string pronounGender;
         bool plural;//является ли число множественным
         
         public Pronoun()
         {
             textWord = "-";
-            pronounCase = Cases.NoData;
-            pronounGender = Genders.NoData;
+            pronounCase = Word.cases.Last();
+            pronounGender = Word.genders.Last();
             plural = false;
+        }
+
+        public new string Print(int indexOfWord)
+        {
+            Word word = Analyzer.GetElemFromWordsInfList(indexOfWord);
+            string infAboutWord = TextWord + " - " + "существительное, ";
+            infAboutWord += plural == true ? "единственное, " : "множественное, ";
+            infAboutWord += pronounGender != Word.genders.Last() ? (pronounGender + ", " ): "";
+            infAboutWord += pronounCase != Word.cases.Last() ? pronounCase : "";
+
+            return infAboutWord;
+        }
+
+        public static List<Word> FillThePronCharacteristics(List<Word> wordsInf, string textData, string wordFromText)
+        {
+            Pronoun pron = new Pronoun();
+            pron.TextWord = wordFromText;
+            textData.Replace("'", "").Replace(wordFromText, "");
+            pron.Plural = Analyzer.SelectPlural(textData);
+            pron.PronounGender = Analyzer.SelectGend(textData);
+            pron.PronounCase = Analyzer.SelectCase(textData);
+            wordsInf.Add(pron);
+
+            return wordsInf;
         }
 
         public string TextWord
@@ -40,7 +64,7 @@ namespace MorphAn
             get { return plural; }
         }
 
-        public Cases PronounCase
+        public string PronounCase
         {
             set
             {
@@ -49,7 +73,7 @@ namespace MorphAn
             get { return pronounCase; }
         }
 
-        public Genders PronounGender
+        public string PronounGender
         {
             set
             {

@@ -6,70 +6,61 @@ using System.Threading.Tasks;
 
 namespace MorphAn
 {
-    class Adjective:Word, IPrintable
+    class Numeral:Word, IPrintable
     {
         bool plural;
         bool initialForm;
-        bool adjectiveFull;
-        string gend;//Gender gend;
-        string adjCase;//Cases nounCase;
+        string gend;
+        string numCase;
         string textWord;
+        bool cardinal;//количественное числительное
 
-        public Adjective()
+        public Numeral()
         {
             plural = false;
-            initialForm = true;
+            initialForm = false;
+            cardinal = true;
             gend = Word.genders.Last();
-            adjCase = Word.cases.Last();
-            adjectiveFull = true;
+            numCase = Word.cases.Last();
             textWord = "-";
         }
 
         public new string Print(int indexOfWord)
         {
             Word word = Analyzer.GetElemFromWordsInfList(indexOfWord);
-            string infAboutWord = TextWord + " - " + "прилагательное, ";
+            string infAboutWord = TextWord + " - " + "существительное, ";
+            infAboutWord += cardinal == true ? "количественное, " : "порядковое, ";
             infAboutWord += plural == true ? "единственное, " : "множественное, ";
             infAboutWord += initialForm == true ? "начальная форма, " : "";
-            infAboutWord += gend != Word.genders.Last() ? gend : "";
-            infAboutWord += adjectiveFull == true ? "полная форма, " : "краткая форма, ";
-            infAboutWord += adjCase != Word.cases.Last() ? adjCase : "";
+            infAboutWord += gend != Word.genders.Last() ? (gend + ", ") : "";
+            infAboutWord += numCase != Word.cases.Last() ? numCase : "";
 
             return infAboutWord;
         }
 
-        public static List<Word> FillTheAdjCharacteristics(List<Word> wordsInf, string textData, string wordFromText)
+        public static List<Word> FillTheNumCharacteristics(List<Word> wordsInf, string textData, string wordFromText)
         {
-            Adjective adj = new Adjective();
-            adj.TextWord = wordFromText;
+            Numeral num = new Numeral();
+            num.TextWord = wordFromText;
             textData.Replace("'", "").Replace(wordFromText, "");
-            adj.Plural = Analyzer.SelectPlural(textData);
-            adj.Gender = Analyzer.SelectGend(textData);
-            adj.AdjCase = Analyzer.SelectCase(textData);
+            num.Plural = Analyzer.SelectPlural(textData);
+            num.Gender = Analyzer.SelectGend(textData);
+            num.NumCase = Analyzer.SelectCase(textData);
             int indexForInitForm = 0;
 
             if (textData.Contains(Analyzer.GetCasesInDict(indexForInitForm)) && 
                 textData.Contains(Analyzer.GetGendInDict(indexForInitForm)))//Если именительный падеж и мужской род
             {
-                adj.InitialForm = true;
+                num.InitialForm = true;
             }
-            if (textData.Contains("крат"))//краткая форма прилагательного
+            if (textData.Contains("поряд"))
             {
-                adj.AdjectiveFull = false;
+                num.Cardinal = false;
             }
 
-            wordsInf.Add(adj);
+            wordsInf.Add(num);
 
             return wordsInf;
-        }
-
-        public bool AdjectiveFull
-        {
-            set
-            {
-                adjectiveFull = value;
-            }
-            get { return adjectiveFull; }
         }
 
         public bool Plural
@@ -81,6 +72,15 @@ namespace MorphAn
             get { return plural; }
         }
 
+        public bool Cardinal
+        {
+            set
+            {
+                cardinal = value;
+            }
+            get { return cardinal; }
+        }
+
         public string Gender
         {
             set
@@ -90,13 +90,13 @@ namespace MorphAn
             get { return gend; }
         }
 
-        public string AdjCase
+        public string NumCase
         {
             set
             {
-                adjCase = value;
+                numCase = value;
             }
-            get { return adjCase; }
+            get { return numCase; }
         }
 
         public bool InitialForm

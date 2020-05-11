@@ -6,47 +6,15 @@ using System.Threading.Tasks;
 
 namespace MorphAn
 {
-    //первое, второе, третье лицо
-    enum Persons
-    {
-        FirstPer,
-        SecondPer,
-        ThirdPer,
-        NoData
-    }
 
-    //времена
-    enum Tenses
+    class Verb : Word, IPrintable
     {
-        NoData,
-        Past,
-        Present,
-        Future
-    }
-
-    enum Moods
-    {
-        NoData,
-        Indicative,//изъявительное наклонение
-        Imperative//повелительное наклонение
-    }
-
-    //Переходность
-    enum Transitivity
-    {
-        Transitive,//переходный
-        Intransitive,//непереходный гл-л
-        TranOrIntr
-    }
-
-    class Verb : Word
-    {// не указаны спряжение и возвратность
         bool plural; //число
         bool infinitive; //начальная форма 
-        Genders gend; //род
-        Persons per;//лицо
-        Moods mood;//наклонение
-        Transitivity tran;
+        string gend; //род
+        string person;//лицо
+        string mood;//наклонение
+        string tran;//переходность
         bool perfectForm;
         string textWord;
         
@@ -54,12 +22,52 @@ namespace MorphAn
         {
             plural = false;
             infinitive = true;
-            gend = Genders.NoData;
-            per = Persons.NoData;
-            mood = Moods.NoData;
-            tran = Transitivity.TranOrIntr;
+            gend = Word.genders.Last();
+            person = Word.persons.Last();
+            mood = Word.moods.Last();
+            tran = Word.transitivity.Last();
             perfectForm = false;
             textWord = "-";
+        }
+
+        public new string Print(int indexOfWord)
+        {
+            string personOfVerb = person + "лицо";
+            Word word = Analyzer.GetElemFromWordsInfList(indexOfWord);
+            string infAboutWord = TextWord + " - " + "прилагательное, ";
+            infAboutWord += person != Word.persons.Last() ? personOfVerb : "";
+            infAboutWord += plural == true ? "единственное ч., " : "множественное ч., ";
+            infAboutWord += infinitive == true ? "начальная форма, " : "";
+            infAboutWord += mood != Word.moods.Last() ? (mood + ", ") : "";
+            infAboutWord += gend != Word.genders.Last() ? gend : "";
+            infAboutWord += perfectForm == true ? "совершенный вид, " : "несовершенный вид, ";
+
+            return infAboutWord;
+        }
+
+        public static List<Word> FillTheVerbCharacteristics(List<Word> wordsInf, string textData, string wordFromText)
+        {
+            Verb verb = new Verb();
+            verb.TextWord = wordFromText;
+            textData.Replace("'", "").Replace(wordFromText, "");
+            verb.Gender = Analyzer.SelectGend(textData);
+            verb.Plural = Analyzer.SelectPlural(textData);
+            wordsInf.Add(verb);
+
+            if (textData.Contains("инф"))
+            {
+                verb.Infinitive = true;
+            }
+            if (textData.Contains("сов"))
+            {
+                verb.PerfectForm = true;
+            }
+
+            verb.Person = Analyzer.SelectPerson(textData);
+            verb.Mood = Analyzer.SelectMood(verb, textData);
+            verb.Tran = Analyzer.SelectTransitivity(textData);
+
+            return wordsInf;
         }
 
         public bool Plural
@@ -80,7 +88,7 @@ namespace MorphAn
             get { return perfectForm; }
         }
 
-        public Genders Gender
+        public string Gender
         {
             set
             {
@@ -89,16 +97,16 @@ namespace MorphAn
             get { return gend; }
         }
 
-        public Persons Per
+        public string Person
         {
             set
             {
-                per = value;
+                person = value;
             }
-            get { return per; }
+            get { return person; }
         }
 
-        public Moods Mood
+        public string Mood
         {
             set
             {
@@ -107,7 +115,7 @@ namespace MorphAn
             get { return mood; }
         }
 
-        public Transitivity Tran
+        public string Tran
         {
             set
             {
